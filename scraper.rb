@@ -9,7 +9,7 @@ names = EveryPolitician::Wikidata.wikipedia_xpath(
   xpath: '//li/a[not(@class="new")][1]/@title',
 ) 
 
-missing = [1261946, 3610379, 15782189, 9160077, 12649485, 270330, 12679521]
+missing = %w(Q1261946 Q3610379 Q15782189 Q9160077 Q12649485 Q270330 Q12679521)
 
 EveryPolitician::Wikidata.scrape_wikidata(ids: missing, names: { lv: [], en: [], de: names }, output: false)
 
