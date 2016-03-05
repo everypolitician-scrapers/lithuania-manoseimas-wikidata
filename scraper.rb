@@ -9,6 +9,7 @@ names = EveryPolitician::Wikidata.wikipedia_xpath(
   xpath: '//li/a[not(@class="new")][1]/@title',
 ) 
 
-EveryPolitician::Wikidata.scrape_wikidata(names: { lv: [], en: [], de: names }, output: false)
-warn EveryPolitician::Wikidata.notify_rebuilder
+missing = [1261946, 3610379, 15782189, 9160077, 12649485, 270330, 12679521]
+
+EveryPolitician::Wikidata.scrape_wikidata(ids: missing, names: { lv: [], en: [], de: names }, output: false)
 
