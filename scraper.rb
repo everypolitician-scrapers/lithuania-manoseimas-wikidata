@@ -3,13 +3,20 @@
 
 require 'wikidata/fetcher'
 
-names = EveryPolitician::Wikidata.wikipedia_xpath( 
+dewiki = EveryPolitician::Wikidata.wikipedia_xpath(
   url: 'https://de.wikipedia.org/wiki/11._Seimas',
   before: '//span[@id="Weblinks"]',
   xpath: '//li/a[not(@class="new")][1]/@title',
-) 
+  as_ids: true,
+)
 
-missing = %w(Q1261946 Q3610379 Q15782189 Q9160077 Q12649485 Q270330 Q12679521)
+query = <<SPARQL
+  SELECT DISTINCT ?item WHERE {
+    ?item p:P39 [ ps:P39 wd:Q18507240 ; pq:P2937 ?term ] .
+    ?term p:P31/pq:P1545 ?ordinal .
+    FILTER (xsd:integer(?ordinal) >= 11)
+  }
+SPARQL
+p39s = EveryPolitician::Wikidata.sparql(query)
 
-EveryPolitician::Wikidata.scrape_wikidata(ids: missing, names: { lv: [], en: [], de: names }, output: false)
-
+EveryPolitician::Wikidata.scrape_wikidata(ids: dewiki | p39s)
